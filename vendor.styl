@@ -1,0 +1,60 @@
+ceil(n, precision = 0)
+  multiplier = 10 ** precision
+  math(n * multiplier, 'ceil') / multiplier
+
+floor(n, precision = 0)
+  multiplier = 10 ** precision
+  math(n * multiplier, 'floor') / multiplier
+
+round(n, precision = 0)
+  multiplier = 10 ** precision
+  math(n * multiplier, 'round') / multiplier
+
+replace(expr, str, val)
+  expr = clone(expr)
+  for e, i in expr
+    if str == e
+      expr[i] = val
+  expr
+
+slice(expr, start, end)
+  result = ()
+  if end < 0
+    end = length(expr) + end
+  for e, i in expr
+    if i >= start and i < end
+      push(result, e)
+  result
+
+text-overflow()
+  vendor('text-overflow', arguments, only: official o)
+
+text-size-adjust()
+  vendor("text-size-adjust", arguments, only: webkit moz ms)
+
+display()
+  if arguments[0] is 'inline-block'
+    display: inline-block
+    *display: inline
+    *zoom: 1
+  else
+    display: arguments
+
+max-width()
+  width: unquote("auto\9")
+  *width: arguments
+  max-width: arguments
+
+font-size(fontSize)
+  font-size: fontSize
+  if 'rem' == unit(fontSize)
+    .lt-ie9 &
+      font-size: unit(fontSize, 'px') * fontSizeNormal
+
+ie8-hack()
+  property = unquote(current-property[0])
+  value = slice(current-property[1], 0, -1)
+  ie6Style = "*%s: %s" % (property value)
+  ie89Style = "%s: %s\0" % (property arguments)
+  ie9Style = "%s: %s\9\0" % (property value)
+  s(";\n%s;\n%s;\n%s", ie89Style, ie6Style, ie9Style)

@@ -6,4 +6,5 @@ Some fragmentary front code
 * jquery-placeholder.coffee: jQuery plugin, `input[placeholder]` fallback in old browser
 * bootstrap-select.coffee: Bootstarp plugin, make `<select>` tag became bootstrap style
 * underscore-extra.coffee: Underscore plugin, add some useful method(like `arrayDel`, `split`, `in`) for underscore.js
-* radius.styl: a shortcut css class file
+* radius.styl: A shortcut css class file
+* vendor.styl: Stylus vendor, same as nib/vendor
