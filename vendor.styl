@@ -46,10 +46,10 @@ max-width()
   max-width: arguments
 
 font-size(fontSize)
-  font-size: fontSize
   if 'rem' == unit(fontSize)
-    .lt-ie9 &
-      font-size: unit(fontSize, 'px') * fontSizeNormal
+    multiplier = htmlFontSize is defined ? htmlFontSize : 10
+    font-size: unit(fontSize, 'px') * multiplier
+  font-size: fontSize
 
 ie8-hack()
   property = unquote(current-property[0])
