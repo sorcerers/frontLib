@@ -42,6 +42,8 @@ display()
 
 max-width()
   max-width: arguments[0]
+  // IE7 and IE8 have very buggy support for the `max-width`
+  // http://stackoverflow.com/questions/8486690/ie-8-overflow-hidden-and-max-width
   width: arguments[0] unquote("\0")
   max-width: arguments[0] unquote("\9\0")
 
