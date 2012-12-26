@@ -41,9 +41,9 @@ display()
     display: arguments
 
 max-width()
-  width: unquote("auto\9")
-  *width: arguments
-  max-width: arguments
+  max-width: arguments[0]
+  width: arguments[0] unquote("\0")
+  max-width: arguments[0] unquote("\9\0")
 
 font-size(fontSize)
   if 'rem' == unit(fontSize)
