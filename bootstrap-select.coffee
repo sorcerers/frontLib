@@ -7,8 +7,8 @@ $.fn.bootSelect = (options) ->
   caret = "<span class='caret'></span>"
   randomName = (prefix) -> prefix + $.now()
 
-  unbindEvent = ($btnGroup, $select) ->
-    $btnGroup.off ".bootSelect"
+  unbindEvent = ($dropdown, $select) ->
+    $dropdown.off ".bootSelect"
     $select.off ".bootSelect"
 
   destroyListItems = ($items) ->
@@ -19,18 +19,18 @@ $.fn.bootSelect = (options) ->
       $li.removeData "option"
       $li.remove()
 
-  bindEvent = ($btnGroup, $select) ->
-    $btnGroup.on "click.bootSelect", ".dropdown-menu li", (event) ->
+  bindEvent = ($dropdown, $select) ->
+    $dropdown.on "click.bootSelect", ".dropdown-menu li", (event) ->
       $li = $ event.currentTarget
-      $btnGroup.find(".dropdown-toggle").html $li.find("a").text() + caret
+      $dropdown.find(".dropdown-toggle").html $li.find("a").text() + caret
       $select.val $li.data("option").val()
       $select.trigger "change"
 
     $select.on "change:dom.bootSelect", (event) ->
       $selectedItem = $select.find "option:selected"
       $listItems = generateListItems $select.find "option"
-      $btnGroup.find(".dropdown-menu").empty().append $listItems
-      $btnGroup.find(".dropdown-toggle").html $selectedItem.text() + caret
+      $dropdown.find(".dropdown-menu").empty().append $listItems
+      $dropdown.find(".dropdown-toggle").html $selectedItem.text() + caret
 
   generateListItems = ($items) ->
     $items.map (index) ->
@@ -50,12 +50,12 @@ $.fn.bootSelect = (options) ->
     @show().each (index, elem) =>
       $this = @eq index
       $items = $this.find "option"
-      $btnGroup = $this.data("btnGroup").removeData "select"
-      $this.removeData("btnGroup").removeAttr "data-select"
+      $dropdown = $this.data("dropdown").removeData "select"
+      $this.removeData("dropdown").removeAttr "data-select"
 
-      unbindEvent $btnGroup, $this
+      unbindEvent $dropdown, $this
       destroyListItems $items
-      $btnGroup.remove()
+      $dropdown.remove()
 
   else
 
@@ -64,12 +64,12 @@ $.fn.bootSelect = (options) ->
       $items = $this.find "option"
       selectName = randomName "select"
 
-      $btnGroup = $ "<div>",
-        class: "btn-group #{$this.data "bs-class"}"
+      $dropdown = $ "<div>",
+        class: "dropdown #{$this.data "bs-class"}"
         "data-select": selectName
       .data "select", $this
 
-      $this.attr("data-select", selectName).data "btnGroup", $btnGroup
+      $this.attr("data-select", selectName).data "dropdown", $dropdown
 
       $toggler = $ "<button>",
         class: "btn dropdown-toggle"
@@ -77,8 +77,8 @@ $.fn.bootSelect = (options) ->
       .html $this.find(":selected").text() + caret
 
       $dropdownMenu = generateDropdownMenu $items
-      $btnGroup.append($toggler).append $dropdownMenu
-      $this.before $btnGroup
+      $dropdown.append($toggler).append $dropdownMenu
+      $this.before $dropdown
       $toggler.dropdown()
 
-      bindEvent $btnGroup, $this
+      bindEvent $dropdown, $this
