@@ -45,10 +45,6 @@
   display: block !important
   visibility: visible
 
-// hide visually from screenreaders, but maintain layout
-.invisible
-  visibility: hidden
-
 // Clearfix:  contain floats
 //
 // For modern browsers
@@ -73,27 +69,23 @@
     // 2
     display: table
 
-.pull-left
-  float: left !important
+// hide visually from screenreaders, but maintain layout
+.invisible { visibility: hidden }
 
-.pull-right
-  float: right !important
+// quick float
+.pull-left { float: left !important }
+.pull-right { float: right !important }
 
-.inline-block
-  display: inline-block
-  
-.line-height
-  line-height: 1.5
+// Toggling content
+.hide { display: none }
+.show { display: block }
 
-.inline-middle
-  vertical-align: middle
+.inline-center { text-align: center }
+.inline-right { text-align: right }
 
-.inline-center
-  text-align: center
+.noscroll { overflow: hidden }
+.affix { position: fixed }
 
-.inline-right
-  text-align: right
-
-.noscroll
-  overflow: hidden
-
+.inline-block { display: inline-block }
+.line-height { line-height: 1.5 }
+.inline-middle { vertical-align: middle }
