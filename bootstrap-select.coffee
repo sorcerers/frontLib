@@ -72,7 +72,7 @@ $.fn.bootSelect = (options) ->
       $this.attr("data-select", selectName).data "dropdown", $dropdown
 
       $toggler = $ "<button>",
-        class: "btn dropdown-toggle"
+        class: "btn btn-select dropdown-toggle"
         "data-toggle": "dropdown"
       .html $this.find(":selected").text() + caret
 
