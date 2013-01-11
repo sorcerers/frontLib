@@ -1,22 +1,18 @@
 (($) ->
-  ajaxActionFactroy = (method, postLike) ->
-    (url, data, callback, type) ->
+  ajaxActionFactroy = (type, postLike) ->
+    (url, data, success, dataType, contentType) ->
       if jQuery.isFunction data
-        type or= callback
-        callback = data
+        dataType or= success
+        success = data
         data = undefined
 
-      options =
-        type: method
-        url: url
-        data: data
-        success: callback
-
-      if postLike and not type
-        options["contentType"] = "application/json"
-        options["processData"] = false
-      else if type
-        options["contentType"] = type if type
+      options = {url, type, dataType, data, success}
+      if postLike
+        if contentType
+          options["contentType"] = contentType
+        else
+          options["contentType"] = "application/json"
+          options["processData"] = false
 
       jQuery.ajax options
 
