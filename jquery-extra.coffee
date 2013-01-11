@@ -13,10 +13,10 @@
         success: callback
 
       if postLike and not type
-        options["type"] = "application/json"
+        options["contentType"] = "application/json"
         options["processData"] = false
       else if type
-        options["type"] = type if type
+        options["contentType"] = type if type
 
       jQuery.ajax options
 
