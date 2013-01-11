@@ -27,6 +27,7 @@
     $[method] = ajaxActionFactroy method, true
 
   $.fn.include = ($elem) ->
+    return false unless @length
     $elem = $($elem) unless $elem instanceof $
     return true if @is $elem
     return true if $.contains this[0], $elem[0]
