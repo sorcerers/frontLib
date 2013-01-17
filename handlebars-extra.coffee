@@ -59,7 +59,8 @@ Handlebars.registerHelper "startWith", (value, startStr, options) ->
   options[method] this
 
 Handlebars.registerHelper "textPlaceholder", (str, placeholder) ->
-  if str then new Handlebars.SafeString(str) else placeholder
+  testStr = str.replace /\s*/g, ""
+  if testStr then new Handlebars.SafeString(str) else placeholder
 
 Handlebars.registerHelper 'truncate', (str, length, omission) ->
   omission = "" unless omission?
