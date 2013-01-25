@@ -34,7 +34,6 @@ params:
     autoSubmit: {Boolean}
     mimeType: {Array}
     action: {String}
-    name: {String}
     data: {Hash}
 events:
   filepicker.complete
