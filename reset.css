@@ -1,10 +1,13 @@
-﻿/* Copyright 2012   MIT Licensed */
-
-/*
+﻿/*
 CSS Reset
   1. reset 的目的不是清除浏览器的默认样式，这仅是部分工作。清除和重置是紧密不可分的。
   2. reset 的目的不是让默认样式在所有浏览器下一致，而是减少默认样式有可能带来的问题。
   3. reset 期望提供一套普适通用的基础样式。但没有银弹，推荐根据具体需求，裁剪和修改后再使用。
+
+TODO:
+  去除不需要的Reset
+  http://www.zhangxinxu.com/wordpress/2012/07/bottleneck-css-study/
+  http://stackoverflow.com/questions/6867254/browsers-default-css-for-html-elements/6867287#6867287
 */
 
 /* 清除内外边距 */
@@ -14,24 +17,22 @@ pre, /* text formatting elements 文本格式元素 */
 form, fieldset, legend, button, input, textarea, /* form elements 表单元素 */
 th, td /* table elements 表格元素 */ { margin: 0; padding: 0; }
 
+/* 重置 HTML5 元素 */
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section,
+summary, time, mark, audio, video { display: block; margin: 0; padding: 0; }
+mark { background: #ff0; }
+
 /* 设置默认字体 */
-html { font-size: 62.5%; }
 body,
 button, input, select, textarea /* for ie */ {
-  font: 12px/1.5 "Helvetica Neue", Helvetica, \5FAE\8F6F\96C5\9ED1, tahoma, arial, \5b8b\4f53, Verdana, Geneva, sans-serif, "Myriad Pro";
-  font-size: 1.2rem;
-  -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;
+  /* http://www.zhihu.com/question/19911793 */
+  font: 12px/1.5 "Helvetica Neue", Helvetica, "Hiragino Sans GB", STHeiti, "WenQuanYi Micro Hei", \5FAE\8F6F\96C5\9ED1, arial, sans-serif;
+  /* -webkit-text-size-adjust: 100%; http://stackoverflow.com/questions/6210788/how-to-avoid-ios-automatic-font-size-adjustment */
   -webkit-font-smoothing:antialiased; /* Fix for webkit rendering, see also http://maxvoltar.com/archive/-webkit-font-smoothing */
 }
 h1, h2, h3, h4, h5, h6 { font-size: 100%; }
 address, cite, dfn, em, var { font-style: normal; } /* 将斜体扶正 */
 code, kbd, pre, samp { font-family: courier new, courier, monospace; } /* 统一等宽字体 */
-small { font-size: 12px; } /* 小于 12px 的中文很难阅读，让 small 正常化 */
-
-/* 主体自适应居中 */
-body{ margin: 0px auto; }
-
-html, body { height: 100%; }
 
 /* 重置列表元素 */
 ul, ol { list-style: none; }
@@ -44,7 +45,7 @@ a:hover { text-decoration: underline; }
 sup { vertical-align: text-top; }
 sub { vertical-align: text-bottom; }
 
-img { border: 0; -ms-interpolation-mode: bicubic; } /* 修复 ie7 下图片缩放失真的问题 */
+img { -ms-interpolation-mode: bicubic; } /* 修复 ie7 下图片缩放失真的问题 */
 
 /* 重置表单元素 */
 legend { color: #000; } /* for ie6 */
@@ -54,8 +55,3 @@ button, input, select, textarea { font-size: 100%; } /* 使得表单元素在 ie
 
 /* 重置表格元素 */
 table { border-collapse: collapse; border-spacing: 0; }
-
-/* 重置 HTML5 元素 */
-article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section,
-summary, time, mark, audio, video { display: block; margin: 0; padding: 0; }
-mark { background: #ff0; }
