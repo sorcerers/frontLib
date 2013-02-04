@@ -1,14 +1,16 @@
 ((location, console) ->
-  re = ///(^|\?|&)#{console.debugSwatch or "debug"}(&|=|$)///
-  enableDebug = location.search.match re
+  debugMode = ->
+    re = ///(^|\?|&)#{console.debugSwitch}(&|=|$)///
+    !!location.search.match(re) or console.debugMode
+
   console.log ?= ->
+  console.debugSwitch ?= "debug"
 
   console.debugger = ->
-    return unless enableDebug or console.debugMode
-    debugger
+    debugger if debugMode()
 
   holder = (method, fn) -> ->
-    return unless enableDebug or console.debugMode
+    return unless debugMode()
     if fn
       fn.apply console, arguments
     else
