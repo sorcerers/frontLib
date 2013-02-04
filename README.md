@@ -5,6 +5,8 @@ Some fragmentary front code
 * auto_completer.coffee: jQuery plugin, event drive, [weibo.com](http://weibo.com) style at complete
 * jquery-placeholder.coffee: jQuery plugin, `input[placeholder]` fallback in old browser
 * bootstrap-select.coffee: Bootstarp plugin, make `<select>` tag became bootstrap style
+* debugger.coffee: `console` partner
+
 * vendor.styl: Stylus vendor, same as nib/vendor
 
 * radius.styl: A shortcut css class file
