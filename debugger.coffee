@@ -9,12 +9,17 @@
   console.debugger = ->
     debugger if debugMode()
 
-  holder = (method, fn) -> ->
-    return unless debugMode()
-    if fn
-      fn.apply console, arguments
-    else
-      console.log "[#{method}]:", arguments...
+  holder = (method, fn) ->
+    # typeof console.log is object in IE9
+    #  http://stackoverflow.com/questions/5538972/console-log-apply-not-working-in-ie9#answer-5539378
+    if fn and typeof fn is "object"
+      fn = Function::bind.call fn, console
+    ->
+      return unless debugMode()
+      if fn
+        fn.apply console, arguments
+      else
+        console.log "[#{method}]:", arguments...
 
   methods = """
     log
@@ -38,7 +43,7 @@
     timeEnd
   """.split /\s/
 
-  while method = methods.pop()
+  while method = methods.shift()
     console[method] = holder method, console[method]
 
   if window.Proxy
