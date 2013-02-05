@@ -27,11 +27,15 @@ qq.UploadHandlerForm::_createForm = (iframe, params) ->
   form
 # ]]]
 
+$.support.xhrprogress = File? and FormData? and (new XMLHttpRequest).upload?
+$.support.inputMultiple = `"multiple" in document.createElement("input")`
+
 ###
 params:
   selector: {jQuery, jQuery Selector, HTMLElement} button element
   options:
     autoSubmit: {Boolean}
+    multiple: {Boolean}
     mimeType: {Array}
     action: {String}
     data: {Hash}
@@ -43,7 +47,7 @@ events:
   filepicker.upload
   filepicker.change
 ###
-class FilePicker
+class FilePicker # [[[
   constructor: (selector, options) ->
     if _.isString(selector) or _.isElement(selector)
       $el = $ selector
@@ -59,11 +63,11 @@ class FilePicker
       name
       mimeType: ("image/#{ext}" for ext in ["png", "jpg", "jpeg", "gif"])
       autoSubmit: false
+      multiple: false
     }, options
 
     @el = $el[0]
     @$el = $el
-    @_fileInfo = {}
     @_submitData = {}
     @_uploading = false
     @expando = finalOptions.name + $.now()
@@ -78,9 +82,14 @@ class FilePicker
   emptyFile: -> @uploadButton?.reset?()
   disableButton: => @$fileElem().hide().css "z-index": -1
   activeButton: => @$fileElem().show().css "z-index": 3
+
   submit: (callback) ->
-    extraData = data: @_submitData, fileInput: @fileElem()
-    @constructor.send $.extend @options, extraData
+    if @options.multiple
+      extraData = files: @fileElem().files
+      @constructor.sendMulit $.extend @options, {data: @_submitData}, extraData
+    else
+      extraData = fileInput: @fileElem()
+      @constructor.send $.extend @options, {data: @_submitData}, extraData
 
   remove: (options) ->
     @clearData()
@@ -90,7 +99,6 @@ class FilePicker
     delete @uploadButton
 
   _init: (options) ->
-    @_fileInfo = {}
     @_initButton options
     @$el.data "filePicker", this
     @$fileElem().data "filePicker", this
@@ -108,12 +116,13 @@ class FilePicker
     options = @_wrapOptionHandler _.clone options
     options.url = options.action
     options.element = @el
-    options.multiple = false
     options.acceptFiles = options.mimeType
     @setData options.data
     delete options.ext
     delete options.data
     delete options.action
+    unless $.support.inputMultiple
+      delete options.multiple
     options
 
   _wrapOptionHandler: (options) -> # [[[
@@ -131,6 +140,7 @@ class FilePicker
         @options.onComplete fileName, data
 
       onSuccess: (data) =>
+        # TODO: 多张上传的话文件名就不能是这样了
         fileName = @fileName()
         return @options.onFailure data if data?.error?
         @$el.trigger "filepicker.success", [fileName, data]
@@ -151,36 +161,32 @@ class FilePicker
         result
 
       onChange: (input) =>
-        @el.files = @fileElem().files if isSupportProgress
-        @_fileInfo.name = fileName = @fileName()
-        @$el.trigger "filepicker.change", [fileName, @el.files]
+        @el.files = @fileElem().files if $.support.xhrprogress
+        @$el.trigger "filepicker.change", [@fileName(), @el.files]
         result = onChange?.call @el, fileName, @el.files
         return false if result is false
         @submit() if @options.autoSubmit
   # ]]]
+# ]]]
 
 # send [[[
 send = (options) =>
-  sendMethod = if isSupportProgress then sendFormData else sendForm
+  sendMethod = if $.support.xhrprogress then sendFormData else sendForm
   sendMethod? options
 
 sendMulit = (options) ->
-  {files, fileInputs, onProgress, onFailure, onSuccess} = options
+  {files, onProgress, onFailure, onSuccess} = options
+  delete options.files
+
+  files = _(files).toArray()
   filesDatas = []
 
-  if files.length
-    data = files
-    type = "file"
-  else
-    data = fileInputs or []
-    type = "fileInputs"
-
-  fileCount = data.length
-  total = if isSupportProgress
+  fileCount = files.length
+  total = if $.support.xhrprogress
     _(file.size for file in files).reduce (result, number) ->
       result + number
   else
-    data.length
+    files.length
 
   options.onProgress = ({loaded}) ->
     onProgress? {loaded, total}
@@ -191,11 +197,8 @@ sendMulit = (options) ->
     return if fileCount
     onSuccess? filesDatas
 
-  delete options.fileInputs
-  delete options.files
-
-  while data.length
-    options[type] = data.shift()
+  while files.length
+    options.file = files.shift()
     send options
 
 xhrUpload = (options) ->
@@ -286,8 +289,7 @@ sendForm = (options) ->
 
   uploadHandlerForm.upload fileId
 
-isSupportProgress = File? and FormData? and (new XMLHttpRequest).upload?
-classMethods = {send, sendMulit, sendForm, sendFormData, isSupportProgress}
+classMethods = {send, sendMulit, sendForm, sendFormData}
 # ]]]
 
 window.qq ?= {}
