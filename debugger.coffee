@@ -10,10 +10,13 @@
     debugger if debugMode()
 
   holder = (method, fn) ->
-    # typeof console.log is object in IE9
+    # typeof console.log is object in IE
     #  http://stackoverflow.com/questions/5538972/console-log-apply-not-working-in-ie9#answer-5539378
-    if fn and typeof fn is "object"
-      fn = Function::bind.call fn, console
+    if typeof fn is "object"
+      try
+        # Third lib may wrap Function::bind and assert
+        # argument is a function, for example Modernizr
+        fn = Function::bind.call fn, console
     ->
       return unless debugMode()
       if fn

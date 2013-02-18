@@ -116,8 +116,8 @@ exec = (args..., options) ->
   if helperName not in _(Handlebars.helpers).keys()
     return Handlebars.helpers.helperMissing helperName
 
-  subExecStart = args.indexOf("(")
-  subExecEnd = args.lastIndexOf(")")
+  subExecStart = _(args).indexOf("(")
+  subExecEnd = _(args).lastIndexOf(")")
   if !!~subExecStart and !!~subExecEnd
     subExec = args.splice(subExecStart, subExecEnd - subExecStart + 1)
     result = exec subExec.slice(1, -1)..., options
