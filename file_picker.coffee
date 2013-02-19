@@ -130,6 +130,7 @@ class FilePicker # [[[
     $.extend options,
       onComplete: (fileName, data) =>
         @_uploading = false
+        @emptyFile()
         onComplete?.apply @el, [fileName, data]
 
       onFailure: (data) =>
@@ -175,6 +176,7 @@ send = (options) =>
   sendMethod? options
 
 sendMulit = (options) ->
+  options = _.clone options
   {files, onProgress, onFailure, onSuccess} = options
   delete options.files
 
