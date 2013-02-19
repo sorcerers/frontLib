@@ -148,6 +148,29 @@ class AutoCompleter
     cursorPos = @getCursor()
     @constructor.getLastTrigger content, cursorPos, @flags, @hiddenChars
 
+  replaceInputed: (value, withTrigger=true) ->
+    return unless @$textarea
+    return unless lastTrigger = @_checkTrigger()
+    origPos = @getCursor()
+    {pos: triggerPos} = lastTrigger
+    inputed = @getInputed triggerPos
+
+    if withTrigger
+      index = triggerPos - 1
+      length = inputed.length + 1
+    else
+      index = triggerPos
+      length = inputed.length
+
+    deleteTriggerString = (string) =>
+      origContent = string.split ""
+      origContent.splice index, length
+      origContent
+
+    @$textarea.val deleteTriggerString(@$textarea.val()).join ""
+    @setCursor index
+    @insertCursor value
+
   _wrapEvents: (events) ->
     wrapEvent = (event) -> "#{event}.acdefined"
     events = [events] unless _(events).isArray()
