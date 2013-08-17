@@ -47,12 +47,6 @@ max-width()
   width: arguments[0] unquote("\0")
   max-width: arguments[0] unquote("\9\0")
 
-font-size(fontSize)
-  if 'rem' == unit(fontSize)
-    multiplier = htmlFontSize is defined ? htmlFontSize : 10
-    font-size: unit(fontSize, 'px') * multiplier
-  font-size: fontSize
-
 ie8-hack()
   property = unquote(current-property[0])
   value = slice(current-property[1], 0, -1)
@@ -60,3 +54,4 @@ ie8-hack()
   ie89Style = "%s: %s\0" % (property arguments)
   ie9Style = "%s: %s\9\0" % (property value)
   s(";\n%s;\n%s;\n%s", ie89Style, ie6Style, ie9Style)
+
