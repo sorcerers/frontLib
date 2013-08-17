@@ -16,7 +16,7 @@
     height: 150%
 
 // hide only visually, but have it avaliable for screenreaders
-.visuallyhidden
+.visuallyhidden, .sr-only
   border: 0
   clip: rect(0 0 0 0)
   height: 1px
@@ -41,11 +41,6 @@
 .hidden
   display: none !important
   visibility: hidden
-
-// reverse .hidden
-.visible
-  display: block !important
-  visibility: visible
 
 // Clearfix:  contain floats
 //
@@ -74,18 +69,15 @@
 // hide visually from screenreaders, but maintain layout
 .invisible { visibility: hidden }
 
+// other
+.noscroll { overflow: hidden }
+.text-left { text-align: left }
+.text-center { text-align: center }
+.text-right { text-align: right }
 
-// from bootstrap: http://twitter.github.com/bootstrap/
-
-// quick float
-.pull-left { float: left }
-.pull-right { float: right }
-
-// Toggling content
-.hide { display: none }
-.show { display: block }
-
-.affix { position: fixed }
+// from bootstrap
+.pull-left { float: left !important }
+.pull-right { float: right !important }
 
 ul, ol
   &.unstyled, &.inline
@@ -98,12 +90,3 @@ ul, ol
     *display: inline
     *zoom: 1
 
-
-// other
-
-.noscroll { overflow: hidden }
-.line-height { line-height: 1.5 }
-.inline-center { text-align: center }
-.inline-right { text-align: right }
-.inline-block { display: inline-block !important }
-.inline-middle { vertical-align: middle }
