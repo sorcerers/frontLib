@@ -71,41 +71,35 @@ angular.module('ng-extra', [])
 ]) # ]]]
 
 # html:
-#   <button data-ng-busy-button="busyButtonOptions">submit</button>
+#   <button data-busybtn="click dblclick"
+#           data-busybtn-text="submiting..."
+#           data-busybtn-handler="onclick($event)"
+#   >submit</button>
 #
 # code:
-#   $scope.busyButtonOptions =
-#     busyText: 'submiting...'
-#     events:
-#       click: 'onclick()'
-#
 #   $scope.onclick = ->
 #     defer = $q.defer()
 #     # some code
 #     defer.promise
 #
-.directive('ngBusyButton', -> # [[[
+.directive('busybtn', -> # [[[
   link: (scope, element, attrs) ->
-    originalText = element.text()
-    config = scope.$eval(attrs.ngBusyButton) or {}
+    originalText = undefined
+
     isBusy = false
 
-    fn = (cb) ->
-      (event) ->
-        return if isBusy
-        isBusy = true
-        promise = scope.$eval cb
-        if angular.isDefined(promise) && promise.hasOwnProperty('then')
-          promise.then -> isBusy = false
-
-    angular.forEach config.events, (cb, event) ->
-      element.on event, fn(cb)
+    element.on attrs.busybtn, (event) ->
+      return if isBusy
+      isBusy = true
+      originalText = element.text()
+      promise = scope.$eval attrs.busybtnHandler
+      if angular.isDefined(promise) and promise.hasOwnProperty('then')
+        promise.finally -> isBusy = false
 
     scope.$watch (-> isBusy), (isBusy) ->
-      action = if isBusy then 'add' else 'remove'
-      element["#{action}Class"] 'disabled'
-      element["#{action}Attr"] 'disabled', 'disabled'
-      if angular.isDefined config.busyText
-        element.text if isBusy then config.busyText else originalText
+      element["#{if isBusy then 'add' else 'remove'}Class"] 'disabled'
+      element["#{if isBusy then 'a' else 'removeA'}ttr"] 'disabled', 'disabled'
+      if angular.isDefined attrs.busybtnText
+        element.text if isBusy then attrs.busybtnText else originalText
 ) # ]]]
 
