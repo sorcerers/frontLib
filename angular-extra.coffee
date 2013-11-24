@@ -70,3 +70,27 @@ angular.module('ng-extra', [])
 
 ]) # ]]]
 
+.directive('ngBusyButton', -> # [[[
+  link: (scope, element, attrs) ->
+    originalText = element.text()
+    config = scope.$eval(attrs.ngBusyButton) or {}
+    isBusy = false
+
+    fn = (cb) ->
+      (event) ->
+        return if isBusy
+        isBusy = true
+        promise = scope.$eval cb
+        if angular.isDefined(promise) && promise.hasOwnProperty('then')
+          promise.then -> isBusy = false
+
+    angular.forEach config.events, (cb, event) ->
+      element.on event, fn(cb)
+
+    scope.$watch (-> isBusy), (isBusy) ->
+      action = if isBusy then 'add' else 'remove'
+      element["#{action}Class"] 'disabled'
+      if angular.isDefined config.busyText
+        element.text if isBusy then config.busyText else originalText
+) # ]]]
+
