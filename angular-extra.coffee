@@ -70,6 +70,20 @@ angular.module('ng-extra', [])
 
 ]) # ]]]
 
+# html:
+#   <button data-ng-busy-button="busyButtonOptions">submit</button>
+#
+# code:
+#   $scope.busyButtonOptions =
+#     busyText: 'submiting...'
+#     events:
+#       click: 'onclick()'
+#
+#   $scope.onclick = ->
+#     defer = $q.defer()
+#     # some code
+#     defer.promise
+#
 .directive('ngBusyButton', -> # [[[
   link: (scope, element, attrs) ->
     originalText = element.text()
