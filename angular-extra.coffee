@@ -90,6 +90,7 @@ angular.module('ng-extra', [])
     scope.$watch (-> isBusy), (isBusy) ->
       action = if isBusy then 'add' else 'remove'
       element["#{action}Class"] 'disabled'
+      element["#{action}Attr"] 'disabled', 'disabled'
       if angular.isDefined config.busyText
         element.text if isBusy then config.busyText else originalText
 ) # ]]]
