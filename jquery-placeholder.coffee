@@ -1,12 +1,16 @@
 return if $().placeholder?
 
-$.fn.placeholder = (options) ->
-  return if Modernizr.input.placeholder is true
+input = document.createElement 'input'
+if 'placeholder' in input
+  $.fn.placeholder = ->
+  return
 
-  $("html").addClass "no-placeholder"
+$("html").addClass "no-placeholder"
+$.fn.placeholder = (options) ->
   @each (index, elem) =>
-    return if elem.tagName.toLowerCase() isnt "input"
     return unless ($elem = @eq index).attr "placeholder"
+    unless $elem.is "input"
+      throw Error 'jquery-placeholder only support input tag now'
 
     removeData = ->
       return unless $elem?
@@ -52,9 +56,12 @@ $.fn.placeholder = (options) ->
       $elem.trigger "change"
     , 100
 
-    events = ("#{event}.placeholder" for event in ["click", "change", "keyup"]).join " "
-
+    events = 'click change keyup'.replace(/(\s|$)+/g, '.placeholder ')
     $elem.wrap($p).before($label).on events, (event) ->
-      $label[`$elem.val()? "hide": "show"`]()
+      $label[if $elem.val() then "hide" else "show"]()
 
     $label.on "click.placeholder mousedown.placeholder", (event) -> $elem.focus()
+
+$ ->
+  $('[placeholder]').placeholder()
+
