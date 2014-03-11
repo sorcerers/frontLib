@@ -15,7 +15,7 @@ Some fragmentary front code
 * simple_grid.styl: A simple grid for stylus.
 
 * jquery-extra.coffee: jQuery plugin, add some useful method (like `patch`, `delete`) for `jquery.js`.
-* underscore-extra.coffee: Underscore plugin, add some useful method (like `arrayDel`, `split`, `in`) for `underscore.js` or `lodash.js`.
 * handlebars-extra.coffee: Handlebars plugin, add some useful method (like `debugger`, `lengthGt`, `partial`, `exec`) for `handlebars.js`.
+* [underscore-extra](https://github.com/sorcerers/underscore-extra): Add some useful method (like `arrayDel`, `split`, `in`) for `underscore.js` or `lodash.js`.
 * [ng-extra](https://github.com/sorcerers/ng-extra): Angular plugin, add some useful feature for `angular.js`.
 
